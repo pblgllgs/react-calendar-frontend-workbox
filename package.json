@@ -21,10 +21,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && yarn PWA",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "auto": "yarn build && serve -s build"
+    "PWA": "workbox injectManifest"
   },
   "eslintConfig": {
     "extends": "react-app"
