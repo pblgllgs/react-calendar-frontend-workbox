@@ -13,29 +13,53 @@ const { registerRoute } = workbox.routing;
 const { CacheFirst, NetworkFirst, NetworkOnly } = workbox.strategies;
 const { BackgroundSyncPlugin } = workbox.backgroundSync;
 
+const cacheNetworkFirst = ['/api/auth/renew', '/api/events'];
+
 registerRoute(
-  new RegExp('http://localhost:4000/api/auth/renew'),
+  ({request, url}) => {
+    if (cacheNetworkFirst.includes(url.pathname)) return true;
+    return false;
+  },
   new NetworkFirst()
 );
 
-registerRoute(
-  new RegExp('http://localhost:4000/api/events'),
-  new NetworkFirst()
-);
 
-registerRoute(
-  new RegExp(
-    'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'
-  ),
-  new CacheFirst()
-);
+// registerRoute(
+//   new RegExp('http://localhost:4000/api/auth/renew'),
+//   new NetworkFirst()
+// );
 
-registerRoute(
-  new RegExp(
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css'
-  ),
-  new CacheFirst()
-);
+// registerRoute(
+//   new RegExp('http://localhost:4000/api/events'),
+//   new NetworkFirst()
+// );
+
+const cacheNetworkfirstResources = [
+  'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css',
+];
+
+registerRoute(({ request, url }) => {
+  if (cacheNetworkfirstResources.includes(url.href)) {
+    return true;
+  }
+  return false;
+}, new CacheFirst());
+
+
+// registerRoute(
+//   new RegExp(
+//     'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'
+//   ),
+//   new CacheFirst()
+// );
+
+// registerRoute(
+//   new RegExp(
+//     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css'
+//   ),
+//   new CacheFirst()
+// );
 
 //OFFLINE
 
